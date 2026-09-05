@@ -261,7 +261,7 @@ async def tax_correction(classification_id: UUID, payload: TaxCorrectionRequest,
 async def forecast_latest(session: AsyncSession = Depends(database_session), _: User = Depends(current_user)) -> ForecastSnapshotResponse:
     snapshot = await session.scalar(select(ForecastSnapshot).order_by(ForecastSnapshot.generated_at.desc()).limit(1))
     if snapshot is None:
-        snapshot = await build_and_persist_forecast(session)
+        snapshot = await build_and_persist_forecast(session, persist=False)
     return forecast_response(snapshot)
 
 

@@ -13,6 +13,7 @@ from api.forecast import project
 from api.models import AuditLog, ExceptionRecord, LedgerLine, Match, User
 from api.mutations import override_match, update_exception
 from api.settings import matching_rules_response
+from api.settings import DEFAULTS
 from api.tax import classify_line
 from api.uploads import parse_csv
 from api.worker import celery_app
@@ -51,6 +52,10 @@ def test_alembic_revision_ids_fit_version_column_limit() -> None:
             revision_ids.append(match.group(1))
     assert revision_ids
     assert all(len(revision_id) <= 32 for revision_id in revision_ids)
+
+
+def test_tax_settings_default_matches_api_response_shape() -> None:
+    assert DEFAULTS["tax_rules"] == {"rules": []}
 
 
 def test_celery_worker_uses_configured_redis_and_registers_reconciliation_task() -> None:

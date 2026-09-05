@@ -29,6 +29,16 @@ export interface CreateRunResponse {
   run_id: string;
 }
 
+export interface MatchRecord {
+  id: string;
+  line_a_id: string;
+  line_b_id: string;
+  tier: number;
+  confidence: number;
+  variance: number;
+  status: string;
+}
+
 export type ExceptionStatus = 'new' | 'investigating' | 'resolved' | 'written_off';
 
 export interface ExceptionRecord {
@@ -60,7 +70,7 @@ export interface ForecastSnapshot {
   run_id: string;
   generated_at: string;
   opening_cash: number;
-  weeks: unknown;
+  weeks: Array<{ week: number; projected_cash: number; delta_from_opening: number }>;
   low_point_week: number;
   avg_settlement_lag: number;
 }
@@ -72,5 +82,48 @@ export interface AuditLogEntry {
   entity_type: string;
   entity_id: string;
   payload: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface AccuracyRecord {
+  precision: number;
+  recall: number;
+  f1: number;
+  tp: number;
+  fp: number;
+  fn: number;
+  tn: number;
+}
+
+export interface CopilotResponse {
+  answer: string;
+  cited_record_ids: string[];
+  mode: string;
+}
+
+export interface CopilotHistoryEntry extends CopilotResponse {
+  id: string;
+  question: string;
+  created_at: string;
+}
+
+export interface MatchingRules {
+  match_auto_accept_confidence: number;
+  match_amount_tolerance_pct: number;
+  match_date_window_days: number;
+}
+
+export interface TaxRule {
+  jurisdiction: string;
+  label: string;
+  status: string;
+  confidence: number;
+}
+
+export interface RazorpayActivity {
+  id: string;
+  operation: string;
+  status: string;
+  response: Record<string, unknown>;
   created_at: string;
 }

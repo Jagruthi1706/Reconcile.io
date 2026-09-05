@@ -12,6 +12,13 @@ import type {
   TaxClassificationRecord,
   ForecastSnapshot,
   AuditLogEntry,
+  AccuracyRecord,
+  CopilotHistoryEntry,
+  CopilotResponse,
+  MatchRecord,
+  MatchingRules,
+  RazorpayActivity,
+  TaxRule,
 } from '@/lib/api-types';
 import { clearAccessToken, getAccessToken, setAccessToken } from '@/lib/session';
 
@@ -81,8 +88,15 @@ export async function getRunDetail(runId: string): Promise<ReconciliationRunDeta
   return apiFetch<ReconciliationRunDetail>(`/runs/${runId}`);
 }
 
+export async function getRunMatches(runId: string): Promise<MatchRecord[]> {
+  return apiFetch<MatchRecord[]>(`/runs/${runId}/matches`);
+}
+
 export async function createRun(): Promise<CreateRunResponse> {
-  return apiFetch<CreateRunResponse>('/runs', { method: 'POST' });
+  return apiFetch<CreateRunResponse>('/runs', {
+    method: 'POST',
+    body: JSON.stringify({ left_record_ids: [], right_record_ids: [] }),
+  });
 }
 
 export async function getExceptions(
@@ -115,4 +129,32 @@ export async function getAudit(params?: { limit?: number }): Promise<AuditLogEnt
   if (params?.limit) search.set('limit', String(params.limit));
   const qs = search.toString();
   return apiFetch<AuditLogEntry[]>(`/audit${qs ? `?${qs}` : ''}`);
+}
+
+export async function getAccuracyHistory(): Promise<AccuracyRecord[]> {
+  return apiFetch<AccuracyRecord[]>('/accuracy/history');
+}
+
+export async function getGoldenSet(): Promise<Record<string, unknown>[]> {
+  return apiFetch<Record<string, unknown>[]>('/accuracy/golden-set');
+}
+
+export async function askCopilot(question: string, mode: 'structured' | 'gemini' = 'structured'): Promise<CopilotResponse> {
+  return apiFetch<CopilotResponse>('/copilot/query', { method: 'POST', body: JSON.stringify({ question, mode }) });
+}
+
+export async function getCopilotHistory(): Promise<CopilotHistoryEntry[]> {
+  return apiFetch<CopilotHistoryEntry[]>('/copilot/history');
+}
+
+export async function getMatchingRules(): Promise<MatchingRules> {
+  return apiFetch<MatchingRules>('/settings/matching-rules');
+}
+
+export async function getTaxRules(): Promise<{ rules: TaxRule[] }> {
+  return apiFetch<{ rules: TaxRule[] }>('/settings/tax-rules');
+}
+
+export async function getRazorpayActivity(): Promise<RazorpayActivity[]> {
+  return apiFetch<RazorpayActivity[]>('/razorpay/activity');
 }

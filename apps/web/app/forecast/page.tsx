@@ -24,10 +24,7 @@ export default function ForecastPage() {
                 <Summary label="Low point week" value={`Week ${query.data.low_point_week}`} />
                 <Summary label="Average settlement lag" value={String(query.data.avg_settlement_lag)} />
               </div>
-              <div className="mt-6 rounded-panel border border-dashed border-border bg-card p-10 text-center">
-                <p className="text-sm font-medium text-foreground">13-week series awaiting finalized contract</p>
-                <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-foreground/60">The snapshot is available, but its <code>weeks</code> JSON shape is not finalized. No chart is rendered until its fields are documented.</p>
-              </div>
+              <div className="mt-6 overflow-x-auto rounded-panel border border-border bg-card"><table className="w-full min-w-[620px] text-left text-sm"><thead className="border-b border-border text-xs uppercase text-foreground/50"><tr><th className="px-4 py-3">Week</th><th className="px-4 py-3">Projected cash</th><th className="px-4 py-3">Change from opening</th></tr></thead><tbody className="divide-y divide-border">{query.data.weeks.map((week) => <tr key={week.week}><td className="px-4 py-3">Week {week.week}</td><td className="px-4 py-3 font-mono">{String(week.projected_cash)}</td><td className="px-4 py-3 font-mono">{String(week.delta_from_opening)}</td></tr>)}</tbody></table></div>
             </>}
     </PageContainer>
   );

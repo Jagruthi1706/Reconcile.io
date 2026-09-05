@@ -10,7 +10,7 @@ DEFAULTS = {
         "match_amount_tolerance_pct": "1.5",
         "match_date_window_days": 5,
     },
-    "tax_rules": [],
+    "tax_rules": {"rules": []},
 }
 
 

@@ -47,6 +47,10 @@ class RunStatusResponse(BaseModel):
     records_processed: int | None = None
     match_rate_count: Decimal | None = None
     match_rate_dollar: Decimal | None = None
+    finished_at: datetime | None = None
+    auto_matched: int = 0
+    needs_review: int = 0
+    exceptions: int = 0
 
 
 class MatchResponse(BaseModel):
@@ -69,6 +73,7 @@ class ExceptionResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
+    run_id: UUID
     line_id: UUID
     reason_code: str
     reason_text: str
