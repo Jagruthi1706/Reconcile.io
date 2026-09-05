@@ -27,7 +27,7 @@ def upgrade() -> None:
     # This is a well-known test credential documented in the migration.
     password_hash = "pbkdf2_sha256$120000$REwUZLsxTT_d8Kh3jnjA8g==$sDAmxT920M2G3IR19-ilIEPkm58wcTnZGWWMcAtr3mc="
     
-    op.execute(
+    op.get_bind().execute(
         sa.text("""
             INSERT INTO users (email, role, password_hash, created_at)
             SELECT 
