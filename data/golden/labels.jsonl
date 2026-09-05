@@ -1,0 +1,30 @@
+{"line_a_id":"00000000-0000-0000-0000-0000000003e9","line_b_id":"00000000-0000-0000-0000-0000000007d1","expected_match":true,"notes":"exact match"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003ea","line_b_id":"00000000-0000-0000-0000-0000000007d2","expected_match":true,"notes":"exact settlement match"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003eb","line_b_id":"00000000-0000-0000-0000-0000000007d3","expected_match":true,"notes":"exact GL cash match"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003ec","line_b_id":"00000000-0000-0000-0000-0000000007d4","expected_match":true,"notes":"exact operating expense match"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003ed","line_b_id":"00000000-0000-0000-0000-0000000007d5","expected_match":true,"notes":"description similarity with missing reference"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003ee","line_b_id":"00000000-0000-0000-0000-0000000007d6","expected_match":true,"notes":"tolerant amount and clearing date"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003ef","line_b_id":"00000000-0000-0000-0000-0000000007d7","expected_match":true,"notes":"small amount variance"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003f0","line_b_id":"00000000-0000-0000-0000-0000000007d8","expected_match":true,"notes":"description similarity"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003f1","line_b_id":"00000000-0000-0000-0000-0000000007d9","expected_match":false,"notes":"currency mismatch"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003f2","line_b_id":"00000000-0000-0000-0000-0000000007da","expected_match":false,"notes":"stale reference"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003f3","line_b_id":"00000000-0000-0000-0000-0000000007db","expected_match":false,"notes":"date variance"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003f4","line_b_id":"00000000-0000-0000-0000-0000000007dc","expected_match":false,"notes":"amount variance"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003f5","line_b_id":"00000000-0000-0000-0000-0000000007dd","expected_match":false,"notes":"in transit"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003f6","line_b_id":"00000000-0000-0000-0000-0000000007de","expected_match":false,"notes":"bank-only fee"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003f7","line_b_id":"00000000-0000-0000-0000-0000000007df","expected_match":false,"notes":"bank-only interest"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003f8","line_b_id":"00000000-0000-0000-0000-0000000007e0","expected_match":false,"notes":"bank-only chargeback"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003f9","line_b_id":"00000000-0000-0000-0000-0000000007e1","expected_match":false,"notes":"duplicate candidate"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003fa","line_b_id":"00000000-0000-0000-0000-0000000007e2","expected_match":true,"notes":"one-to-one consumed counterpart"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003fb","line_b_id":"00000000-0000-0000-0000-0000000007e3","expected_match":true,"notes":"exact reference match"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003fc","line_b_id":"00000000-0000-0000-0000-0000000007e4","expected_match":true,"notes":"clearing date within window"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003fd","line_b_id":"00000000-0000-0000-0000-0000000007e5","expected_match":true,"notes":"exact invoice match"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003fe","line_b_id":"00000000-0000-0000-0000-0000000007e6","expected_match":true,"notes":"tolerant settlement match"}
+{"line_a_id":"00000000-0000-0000-0000-0000000003ff","line_b_id":"00000000-0000-0000-0000-0000000007e7","expected_match":true,"notes":"exact GL cash match"}
+{"line_a_id":"00000000-0000-0000-0000-000000000400","line_b_id":"00000000-0000-0000-0000-0000000007e8","expected_match":true,"notes":"exact operating expense match"}
+{"line_a_id":"00000000-0000-0000-0000-000000000401","line_b_id":"00000000-0000-0000-0000-0000000007e9","expected_match":true,"notes":"description similarity"}
+{"line_a_id":"00000000-0000-0000-0000-000000000402","line_b_id":"00000000-0000-0000-0000-0000000007ea","expected_match":true,"notes":"exact invoice match"}
+{"line_a_id":"00000000-0000-0000-0000-000000000403","line_b_id":"00000000-0000-0000-0000-0000000007eb","expected_match":true,"notes":"exact GL cash match"}
+{"line_a_id":"00000000-0000-0000-0000-000000000404","line_b_id":"00000000-0000-0000-0000-0000000007ec","expected_match":true,"notes":"description similarity"}
+{"line_a_id":"00000000-0000-0000-0000-000000000405","line_b_id":"00000000-0000-0000-0000-0000000007ed","expected_match":true,"notes":"exact invoice match"}
+{"line_a_id":"00000000-0000-0000-0000-000000000406","line_b_id":"00000000-0000-0000-0000-0000000007ee","expected_match":true,"notes":"exact invoice match"}

@@ -1,0 +1,15 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/accuracy/page": "app/accuracy/page.js",
+  "/page": "app/page.js",
+  "/login/page": "app/login/page.js",
+  "/forecast/page": "app/forecast/page.js",
+  "/copilot/page": "app/copilot/page.js",
+  "/pitch/page": "app/pitch/page.js",
+  "/audit/page": "app/audit/page.js",
+  "/reconcile/page": "app/reconcile/page.js",
+  "/settings/page": "app/settings/page.js",
+  "/razorpay/page": "app/razorpay/page.js",
+  "/tax/page": "app/tax/page.js",
+  "/exceptions/page": "app/exceptions/page.js"
+}

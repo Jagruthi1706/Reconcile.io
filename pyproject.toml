@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reconcile-io"
+version = "0.1.0"
+description = "Deterministic finance operations foundation"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+  "alembic>=1.13,<2",
+  "asyncpg>=0.29,<1",
+  "celery[redis]>=5.4,<6",
+  "fastapi>=0.115,<1",
+  "openpyxl>=3.1,<4",
+  "weasyprint>=63,<69",
+  "python-multipart>=0.0.9,<1",
+  "scikit-learn>=1.5,<2",
+  "sqlalchemy[asyncio]>=2.0,<3",
+  "uvicorn[standard]>=0.30,<1",
+]
+
+[project.optional-dependencies]
+test = [
+  "httpx>=0.27,<1",
+  "pytest>=8.3,<9",
+  "pytest-asyncio>=0.24,<1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "api", "packages/engine"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
