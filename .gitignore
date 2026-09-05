@@ -44,3 +44,10 @@ venv/
 
 # Node dependencies (all workspaces)
 node_modules/
+
+# Private project planning and AI context
+roadmap.md
+tasks.md
+tech-stack-and-ux-blueprint.md
+agent.md
+decisions.md
