@@ -1,3 +1,5 @@
+import logging
+from configparser import ConfigParser
 from logging.config import fileConfig
 
 from alembic import context
@@ -11,7 +13,15 @@ from api.models import Base
 config = context.config
 config.set_main_option("sqlalchemy.url", get_settings().database_url)
 if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+    logging_config = ConfigParser()
+    logging_config.read(config.config_file_name)
+    if all(logging_config.has_section(section) for section in ("loggers", "handlers", "formatters")):
+        try:
+            fileConfig(config.config_file_name, disable_existing_loggers=False)
+        except (KeyError, OSError):
+            logging.basicConfig(level=logging.WARNING)
+    else:
+        logging.basicConfig(level=logging.WARNING)
 
 target_metadata = Base.metadata
 
