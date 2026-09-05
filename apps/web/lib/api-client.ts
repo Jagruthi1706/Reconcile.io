@@ -15,7 +15,11 @@ import type {
 } from '@/lib/api-types';
 import { clearAccessToken, getAccessToken, setAccessToken } from '@/lib/session';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || (
+  process.env.NODE_ENV === 'production'
+    ? 'https://supportive-magic-production-93fb.up.railway.app/api/v1'
+    : ''
+);
 
 class ApiError extends Error {
   status: number;
