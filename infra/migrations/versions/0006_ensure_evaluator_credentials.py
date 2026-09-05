@@ -1,13 +1,13 @@
 """Ensure the documented evaluator account exists after migration 0005.
 
-Revision ID: 0006_ensure_evaluator_credentials
+Revision ID: 0006_evaluator_creds
 Revises: 0005_seed_default_evaluator
 """
 
 from alembic import op
 import sqlalchemy as sa
 
-revision = "0006_ensure_evaluator_credentials"
+revision = "0006_evaluator_creds"
 down_revision = "0005_seed_default_evaluator"
 branch_labels = None
 depends_on = None

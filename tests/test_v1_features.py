@@ -1,6 +1,8 @@
 import asyncio
+import re
 from datetime import date, datetime, timezone
 from decimal import Decimal
+from pathlib import Path
 from uuid import uuid4
 
 from api.auth import create_access_token, decode_access_token, hash_password, require_write_role, verify_password
@@ -38,6 +40,17 @@ def test_documented_evaluator_credentials_match_seeded_password_hash() -> None:
     evaluator_hash = "pbkdf2_sha256$120000$REwUZLsxTT_d8Kh3jnjA8g==$sDAmxT920M2G3IR19-ilIEPkm58wcTnZGWWMcAtr3mc="
     assert verify_password("demo-evaluator-password", evaluator_hash)
     assert not verify_password("wrong-password", evaluator_hash)
+
+
+def test_alembic_revision_ids_fit_version_column_limit() -> None:
+    migration_dir = Path(__file__).parents[1] / "infra" / "migrations" / "versions"
+    revision_ids = []
+    for migration in migration_dir.glob("*.py"):
+        match = re.search(r'^revision\s*=\s*["\']([^"\']+)["\']', migration.read_text(), re.MULTILINE)
+        if match:
+            revision_ids.append(match.group(1))
+    assert revision_ids
+    assert all(len(revision_id) <= 32 for revision_id in revision_ids)
 
 
 def test_celery_worker_uses_configured_redis_and_registers_reconciliation_task() -> None:
