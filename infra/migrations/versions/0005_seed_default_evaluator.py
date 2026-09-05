@@ -22,7 +22,7 @@ depends_on = None
 
 
 def upgrade() -> None:
-    # Create default auditor-viewer user if no users exist
+    # Create the evaluator unless this specific account already exists.
     # Password hash for "demo-evaluator-password" (PBKDF2-SHA256, 120000 rounds)
     # This is a well-known test credential documented in the migration.
     password_hash = "pbkdf2_sha256$120000$REwUZLsxTT_d8Kh3jnjA8g==$sDAmxT920M2G3IR19-ilIEPkm58wcTnZGWWMcAtr3mc="
@@ -35,7 +35,7 @@ def upgrade() -> None:
                 'auditor-viewer' as role,
                 :password_hash as password_hash,
                 now() as created_at
-            WHERE NOT EXISTS (SELECT 1 FROM users)
+            WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'evaluator@reconcile.io')
         """),
         {"password_hash": password_hash}
     )

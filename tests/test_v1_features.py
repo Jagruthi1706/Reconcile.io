@@ -34,6 +34,12 @@ def test_railway_postgres_urls_normalize_to_asyncpg_without_losing_ssl_options()
     assert settings.database_url == "postgresql+asyncpg://user:password@host:5432/db?ssl=require"
 
 
+def test_documented_evaluator_credentials_match_seeded_password_hash() -> None:
+    evaluator_hash = "pbkdf2_sha256$120000$REwUZLsxTT_d8Kh3jnjA8g==$sDAmxT920M2G3IR19-ilIEPkm58wcTnZGWWMcAtr3mc="
+    assert verify_password("demo-evaluator-password", evaluator_hash)
+    assert not verify_password("wrong-password", evaluator_hash)
+
+
 def test_celery_worker_uses_configured_redis_and_registers_reconciliation_task() -> None:
     assert celery_app.conf.broker_url == celery_app.conf.result_backend
     assert "api.tasks" in celery_app.conf.imports
