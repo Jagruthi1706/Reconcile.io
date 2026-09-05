@@ -51,3 +51,6 @@ tasks.md
 tech-stack-and-ux-blueprint.md
 agent.md
 decisions.md
+
+# Next.js build output in any workspace
+**/.next/
