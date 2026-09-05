@@ -1,7 +1,9 @@
 import os
 from functools import lru_cache
+from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field, SecretStr, field_validator
 
 
@@ -50,6 +52,7 @@ class Settings(BaseModel):
 
 @lru_cache
 def get_settings() -> Settings:
+    load_dotenv(Path(__file__).resolve().parents[1] / ".env", override=False)
     values = {
         field_name: os.getenv(env_name, default)
         for field_name, env_name, default in (

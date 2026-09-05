@@ -39,6 +39,17 @@ def test_railway_postgres_urls_normalize_to_asyncpg_without_losing_ssl_options()
     assert settings.database_url == "postgresql+asyncpg://user:password@host:5432/db?ssl=require"
 
 
+def test_settings_load_dotenv_before_caching(monkeypatch) -> None:
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+    from api import config
+
+    config.get_settings.cache_clear()
+    monkeypatch.setattr(config, "load_dotenv", lambda *args, **kwargs: config.os.environ.__setitem__("DATABASE_URL", "postgresql://user:password@neon.example/db?sslmode=require"))
+    settings = config.get_settings()
+    assert settings.database_url == "postgresql+asyncpg://user:password@neon.example/db?ssl=require"
+    config.get_settings.cache_clear()
+
+
 def test_documented_evaluator_credentials_match_seeded_password_hash() -> None:
     evaluator_hash = "pbkdf2_sha256$120000$REwUZLsxTT_d8Kh3jnjA8g==$sDAmxT920M2G3IR19-ilIEPkm58wcTnZGWWMcAtr3mc="
     assert verify_password("demo-evaluator-password", evaluator_hash)
