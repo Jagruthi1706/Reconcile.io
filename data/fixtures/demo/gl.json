@@ -1,0 +1,20 @@
+[
+  {
+    "id": "7e6e3f2b-4e5f-4e70-9b02-000000000001",
+    "source": "gl",
+    "amount": "18.00",
+    "currency": "INR",
+    "date": "2024-09-04",
+    "description": "GST filing expense demo",
+    "document_reference": "gl-demo-tax-001"
+  },
+  {
+    "id": "7e6e3f2b-4e5f-4e70-9b02-000000000002",
+    "source": "gl",
+    "amount": "32.00",
+    "currency": "INR",
+    "date": "2024-09-04",
+    "description": "Monthly payroll demo",
+    "document_reference": "gl-demo-payroll-001"
+  }
+]

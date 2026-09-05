@@ -10,7 +10,7 @@ from api.auth import create_access_token, decode_access_token, hash_password, re
 from api.accuracy import _canonical
 from api.config import Settings
 from api.copilot import GeminiProvider, answer_structured
-from api.forecast import project
+from api.forecast import json_safe_weeks, project
 from api.models import AuditLog, ExceptionRecord, LedgerLine, Match, User
 from api.mutations import override_match, update_exception
 from api.settings import matching_rules_response
@@ -85,6 +85,11 @@ def test_numeric_response_fields_serialize_as_json_numbers() -> None:
                 assert isinstance(payload[field][0]["projected_cash"], (int, float))
             else:
                 assert isinstance(payload[field], (int, float))
+
+
+def test_forecast_weeks_are_json_serializable() -> None:
+    result = project(Decimal("125.00"), Decimal("0"), Decimal("0"))
+    assert json.dumps(json_safe_weeks(result["weeks"]))
 
 
 def test_celery_worker_uses_configured_redis_and_registers_reconciliation_task() -> None:

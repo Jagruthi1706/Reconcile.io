@@ -19,6 +19,17 @@ def project(opening_cash: Decimal, opex_delta_pct: Decimal, ar_velocity_delta_pc
     return {"opening_cash": opening_cash, "weeks": weeks, "low_point_week": low_point_week, "avg_settlement_lag": Decimal("0.00")}
 
 
+def json_safe_weeks(weeks: list[dict[str, Decimal | int]]) -> list[dict[str, float | int]]:
+    return [
+        {
+            "week": int(week["week"]),
+            "projected_cash": float(week["projected_cash"]),
+            "delta_from_opening": float(week["delta_from_opening"]),
+        }
+        for week in weeks
+    ]
+
+
 async def build_and_persist_forecast(session: AsyncSession, opex_delta_pct: Decimal = Decimal("0"), ar_velocity_delta_pct: Decimal = Decimal("0"), persist: bool = True) -> ForecastSnapshot:
     opening_cash = Decimal(str(await session.scalar(select(LedgerLine.amount).order_by(LedgerLine.created_at.desc()).limit(1)) or Decimal("0")))
     latest_run = await session.scalar(select(ReconciliationRun).order_by(ReconciliationRun.finished_at.desc()).limit(1))
@@ -29,7 +40,8 @@ async def build_and_persist_forecast(session: AsyncSession, opex_delta_pct: Deci
         avg_settlement_lag = latest_run.avg_settlement_lag
     
     values = project(opening_cash, opex_delta_pct, ar_velocity_delta_pct)
-    snapshot = ForecastSnapshot(id=uuid4(), run_id=latest_run.id if latest_run else uuid4(), generated_at=datetime.now(timezone.utc), weeks=values["weeks"], opening_cash=values["opening_cash"], low_point_week=values["low_point_week"], avg_settlement_lag=avg_settlement_lag)
+    json_weeks = json_safe_weeks(values["weeks"])
+    snapshot = ForecastSnapshot(id=uuid4(), run_id=latest_run.id if latest_run else uuid4(), generated_at=datetime.now(timezone.utc), weeks=json_weeks, opening_cash=values["opening_cash"], low_point_week=values["low_point_week"], avg_settlement_lag=avg_settlement_lag)
     if persist:
         session.add(snapshot)
         await session.commit()

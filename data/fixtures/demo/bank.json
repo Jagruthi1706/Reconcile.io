@@ -1,0 +1,38 @@
+[
+  {
+    "id": "6d5d2f1a-3d4e-4d6f-8a01-000000000001",
+    "source": "bank",
+    "amount": "125.00",
+    "currency": "INR",
+    "date": "2024-09-04",
+    "description": "Razorpay payment order_test_001",
+    "bank_reference": "order_test_001"
+  },
+  {
+    "id": "6d5d2f1a-3d4e-4d6f-8a01-000000000002",
+    "source": "bank",
+    "amount": "2.00",
+    "currency": "INR",
+    "date": "2024-09-04",
+    "description": "Refund for pay_test_001",
+    "bank_reference": "pay_test_001"
+  },
+  {
+    "id": "6d5d2f1a-3d4e-4d6f-8a01-000000000003",
+    "source": "bank",
+    "amount": "123.00",
+    "currency": "INR",
+    "date": "2024-09-04",
+    "description": "Razorpay settlement utr_test_001",
+    "bank_reference": "utr_test_001"
+  },
+  {
+    "id": "6d5d2f1a-3d4e-4d6f-8a01-000000000004",
+    "source": "bank",
+    "amount": "47.50",
+    "currency": "INR",
+    "date": "2024-09-05",
+    "description": "Unidentified bank charge",
+    "bank_reference": "bank-demo-unmatched-001"
+  }
+]
