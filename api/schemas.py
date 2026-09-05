@@ -45,8 +45,8 @@ class RunStatusResponse(BaseModel):
     status: str
     started_at: datetime
     records_processed: int | None = None
-    match_rate_count: Decimal | None = None
-    match_rate_dollar: Decimal | None = None
+    match_rate_count: float | None = None
+    match_rate_dollar: float | None = None
     finished_at: datetime | None = None
     auto_matched: int = 0
     needs_review: int = 0
@@ -60,8 +60,8 @@ class MatchResponse(BaseModel):
     line_a_id: UUID
     line_b_id: UUID
     tier: int
-    confidence: Decimal
-    variance: Decimal
+    confidence: float
+    variance: float
     status: str
 
 
@@ -109,7 +109,7 @@ class TaxClassificationResponse(BaseModel):
     jurisdiction: str
     label: str
     status: str
-    confidence: Decimal
+    confidence: float
     corrected_label: str | None = None
 
 
@@ -119,8 +119,8 @@ class TaxCorrectionRequest(BaseModel):
 
 class ForecastWeek(BaseModel):
     week: int
-    projected_cash: Decimal
-    delta_from_opening: Decimal
+    projected_cash: float
+    delta_from_opening: float
 
 
 class ForecastSnapshotResponse(BaseModel):
@@ -129,10 +129,10 @@ class ForecastSnapshotResponse(BaseModel):
     id: UUID | None = None
     run_id: UUID | str | None = None
     generated_at: datetime | None = None
-    opening_cash: Decimal
+    opening_cash: float
     weeks: list[ForecastWeek]
     low_point_week: int
-    avg_settlement_lag: Decimal
+    avg_settlement_lag: float
 
 
 class CopilotQueryRequest(BaseModel):
@@ -181,8 +181,8 @@ class AuthLoginResponse(BaseModel):
 
 
 class MatchingRulesResponse(BaseModel):
-    match_auto_accept_confidence: Decimal
-    match_amount_tolerance_pct: Decimal
+    match_auto_accept_confidence: float
+    match_amount_tolerance_pct: float
     match_date_window_days: int
 
 
@@ -196,7 +196,7 @@ class TaxRuleResponse(BaseModel):
     jurisdiction: str
     label: str
     status: str
-    confidence: Decimal
+    confidence: float
 
 
 class TaxRulesResponse(BaseModel):
@@ -219,9 +219,9 @@ class UploadResponse(BaseModel):
 
 
 class AccuracyResponse(BaseModel):
-    precision: Decimal
-    recall: Decimal
-    f1: Decimal
+    precision: float
+    recall: float
+    f1: float
     tp: int
     fp: int
     fn: int

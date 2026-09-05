@@ -1,4 +1,5 @@
 import asyncio
+import json
 import re
 from datetime import date, datetime, timezone
 from decimal import Decimal
@@ -14,6 +15,7 @@ from api.models import AuditLog, ExceptionRecord, LedgerLine, Match, User
 from api.mutations import override_match, update_exception
 from api.settings import matching_rules_response
 from api.settings import DEFAULTS
+from api.schemas import AccuracyResponse, ForecastSnapshotResponse, ForecastWeek, MatchResponse, MatchingRulesResponse, RunStatusResponse, TaxClassificationResponse
 from api.tax import classify_line
 from api.uploads import parse_csv
 from api.worker import celery_app
@@ -56,6 +58,22 @@ def test_alembic_revision_ids_fit_version_column_limit() -> None:
 
 def test_tax_settings_default_matches_api_response_shape() -> None:
     assert DEFAULTS["tax_rules"] == {"rules": []}
+
+
+def test_numeric_response_fields_serialize_as_json_numbers() -> None:
+    run = RunStatusResponse(id=uuid4(), status="done", started_at=datetime.now(timezone.utc), records_processed=4, match_rate_count=85.2, match_rate_dollar=90.1)
+    match = MatchResponse(id=uuid4(), line_a_id=uuid4(), line_b_id=uuid4(), tier=1, confidence=0.95, variance=1.2, status="auto-matched")
+    tax = TaxClassificationResponse(id=uuid4(), gl_line_id=uuid4(), jurisdiction="US-CA", label="taxable", status="review", confidence=0.7)
+    forecast = ForecastSnapshotResponse(opening_cash=100.0, weeks=[ForecastWeek(week=1, projected_cash=101.0, delta_from_opening=1.0)], low_point_week=1, avg_settlement_lag=2.0)
+    rules = MatchingRulesResponse(match_auto_accept_confidence=0.9, match_amount_tolerance_pct=1.5, match_date_window_days=5)
+    accuracy = AccuracyResponse(precision=0.9, recall=0.8, f1=0.85, tp=9, fp=1, fn=2, tn=8)
+    payloads = [json.loads(model.model_dump_json()) for model in (run, match, tax, forecast, rules, accuracy)]
+    for payload, fields in zip(payloads, (("match_rate_count", "match_rate_dollar"), ("confidence", "variance"), ("confidence",), ("opening_cash", "avg_settlement_lag", "weeks"), ("match_auto_accept_confidence", "match_amount_tolerance_pct"), ("precision", "recall", "f1"))):
+        for field in fields:
+            if field == "weeks":
+                assert isinstance(payload[field][0]["projected_cash"], (int, float))
+            else:
+                assert isinstance(payload[field], (int, float))
 
 
 def test_celery_worker_uses_configured_redis_and_registers_reconciliation_task() -> None:
