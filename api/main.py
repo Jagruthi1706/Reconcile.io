@@ -285,16 +285,32 @@ async def copilot_history(session: AsyncSession = Depends(database_session), use
     return [CopilotHistoryResponse.model_validate(row) for row in rows]
 
 
+async def run_status_response(session: AsyncSession, run: ReconciliationRun) -> RunStatusResponse:
+    matches = (await session.scalars(select(Match).where(Match.run_id == run.id))).all()
+    exceptions = (await session.scalars(select(ExceptionRecord).where(ExceptionRecord.run_id == run.id))).all()
+    response = RunStatusResponse.model_validate(run)
+    response.auto_matched = sum(match.status == "auto-matched" for match in matches)
+    response.needs_review = sum(match.status == "matched-needs-review" for match in matches)
+    response.exceptions = len(exceptions)
+    return response
+
+
 @app.post("/runs", response_model=RunCreateResponse, status_code=202)
 async def create_run(request: RunCreateRequest, session: AsyncSession = Depends(database_session), _: User = Depends(current_user)) -> RunCreateResponse:
-    summary = await run_reconciliation(session, request.left_record_ids, request.right_record_ids)
+    left_ids = request.left_record_ids
+    right_ids = request.right_record_ids
+    if not left_ids and not right_ids:
+        left_ids = list((await session.scalars(select(LedgerLine.id).where(LedgerLine.source.in_(("bank", "gl"))))).all())
+        right_ids = list((await session.scalars(select(LedgerLine.id).where(LedgerLine.source == "razorpay"))).all())
+    summary = await run_reconciliation(session, left_ids, right_ids)
+    await session.commit()
     return RunCreateResponse(run_id=summary.run_id)
 
 
 @app.get("/runs", response_model=list[RunStatusResponse])
 async def list_runs(limit: int = Query(default=50, ge=1, le=100), session: AsyncSession = Depends(database_session), _: User = Depends(current_user)) -> list[RunStatusResponse]:
     rows = (await session.scalars(select(ReconciliationRun).order_by(ReconciliationRun.started_at.desc()).limit(limit))).all()
-    return [RunStatusResponse.model_validate(row) for row in rows]
+    return [await run_status_response(session, row) for row in rows]
 
 
 @app.get("/runs/{run_id}", response_model=RunStatusResponse)
@@ -302,7 +318,7 @@ async def get_run(run_id: UUID, session: AsyncSession = Depends(database_session
     run = await session.get(ReconciliationRun, run_id)
     if run is None:
         raise HTTPException(status_code=404, detail="reconciliation run not found")
-    return RunStatusResponse.model_validate(run)
+    return await run_status_response(session, run)
 
 
 @app.get("/runs/{run_id}/matches", response_model=list[MatchResponse])

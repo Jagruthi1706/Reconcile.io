@@ -200,6 +200,12 @@ def test_postgres_api_routes_reflect_persisted_state(database) -> None:
                     assert detail.json()["status"] == "done"
                     assert len(matches.json()) + len(exceptions.json()) == len(dataset.left_records)
                     assert len(queue.json()) >= len(exceptions.json())
+
+                    automatic_response = await client.post("/runs", json={"left_record_ids": [], "right_record_ids": []})
+                    assert automatic_response.status_code == 202
+                    automatic_detail = await client.get(f"/runs/{automatic_response.json()['run_id']}")
+                    assert automatic_detail.status_code == 200
+                    assert automatic_detail.json()["records_processed"] == len(dataset.left_records) + len(dataset.right_records)
             finally:
                 app.dependency_overrides.clear()
 
