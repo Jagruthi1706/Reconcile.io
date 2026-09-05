@@ -30,7 +30,7 @@ def test_tax_engine_is_deterministic_and_confidence_gated() -> None:
 
 
 def test_railway_postgres_urls_normalize_to_asyncpg_without_losing_ssl_options() -> None:
-    settings = Settings(database_url="postgresql://user:password@host:5432/db?sslmode=require")
+    settings = Settings(database_url="postgresql://user:password@host:5432/db?sslmode=require&channel_binding=require")
     assert settings.database_url == "postgresql+asyncpg://user:password@host:5432/db?ssl=require"
 
 

@@ -32,6 +32,7 @@ class Settings(BaseModel):
         parsed = urlsplit(value)
         if parsed.scheme in {"postgres", "postgresql"}:
             query = dict(parse_qsl(parsed.query, keep_blank_values=True))
+            query.pop("channel_binding", None)
             if query.get("sslmode") == "require":
                 query["ssl"] = query.pop("sslmode")
             return urlunsplit(("postgresql+asyncpg", parsed.netloc, parsed.path, urlencode(query), parsed.fragment))
